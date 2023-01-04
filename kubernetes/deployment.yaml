@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onboarding-mperju
+  labels:
+    app: iam-mperju
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iam-mperju
+  template:
+    metadata:
+      labels:
+        app: iam-mperju
+    spec:
+      containers:
+      - name: iam-mperju
+        image: mihaiperju/iam-onboarding-mperju
+        ports:
+        - containerPort: 8080

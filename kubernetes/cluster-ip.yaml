@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  onboarding-mperju
+spec:
+  selector:
+    app:  iam-mperju
+  type:  ClusterIP
+  ports:
+  - name: iam-perju
+    port:  80
+    targetPort:  8080

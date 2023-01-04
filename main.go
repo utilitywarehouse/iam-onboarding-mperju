@@ -15,6 +15,7 @@ func Test(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 
+	fmt.Println("Launching the server...")
 	http.HandleFunc("/test", Test)
 
 	err := http.ListenAndServe(":8080", nil)
