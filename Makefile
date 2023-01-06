@@ -1,5 +1,14 @@
+
 build:
 	go build -o main
 
 run:
-	go run main.go
+	./main
+
+clean:
+	go clean
+
+lint:
+	go fmt .
+
+all: clean lint build run

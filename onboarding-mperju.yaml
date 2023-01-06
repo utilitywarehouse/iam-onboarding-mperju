@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onboarding-mperju
+  namespace: onboarding
+  labels:
+    app: onboarding-mperju
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: onboarding-mperju
+  template:
+    metadata:
+      labels:
+        app: onboarding-mperju
+    spec:
+      containers:
+        - name: onboarding-mperju
+          image: mihaiperju/iam-onboarding-mperju
+          ports:
+            - containerPort: 8080
+      # imagePullSecrets:
+      #   - name: docker-registry-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: onboarding-mperju
+  namespace: onboarding
+  # annotations:
+  #   prometheus.io/scrape: "true"
+  #   prometheus.io/path: /__/metrics
+  #   prometheus.io/port: "80"
+spec:
+  selector:
+    app: onboarding-mperju
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: onboarding-mperju
+  namespace: onboarding
+  labels:
+    app: onboarding-mperju
+  annotations:
+    external-dns.alpha.kubernetes.io/target: private-ingress-v2.dev.aws.uw.systems
+spec:
+  rules:
+    - host: onboarding-mperju.dev.aws.uw.systems
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: onboarding-mperju
+  namespace: onboarding
+  labels:
+    app: onboarding-mperju
+    kubernetes.io/ingress.class: traefik-private-v2
+spec:
+  entryPoints:
+    - web-secure
+  routes:
+    - kind: Rule
+      match: Host(`onboarding-mperju.dev.aws.uw.systems`)
+      services:
+        - kind: Service
+          name: onboarding-mperju
+          port: 80
+  tls: {}
