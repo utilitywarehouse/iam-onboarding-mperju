@@ -48,3 +48,4 @@ jobs:
             GITHUB_USER=${{ secrets.DEPLOY_GITHUB_USER }}
           tags: ${{ env.REGISTRY }}/onboarding/${{ env.IMAGE_NAME }}:${{ github.sha }} #REF5 REF6
           push: true  
+
