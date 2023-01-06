@@ -11,4 +11,4 @@ clean:
 lint:
 	go fmt .
 
-all: clean lint build run
+all: clean lint build
